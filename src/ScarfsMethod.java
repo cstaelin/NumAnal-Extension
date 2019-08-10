@@ -392,7 +392,7 @@ public class ScarfsMethod {
     private String getExitMessage() {
       switch (exitFlag) {
         case 1:
-          return (isRelError ? "relative" : "") + "market errors equilibrated to within " + tolerance;
+          return (isRelError ? "relative " : "") + "differences reduced to within " + tolerance;
         case 2:
           return "No convergence, grid became too large";
         default:

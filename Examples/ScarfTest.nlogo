@@ -1,18 +1,16 @@
 extensions [numanal]
 
-globals [slopes weights]
+to scarf
 
-to go
-  set slopes (list 4 2 7)
-  set weights (list 0.5 0.2 0.3)
 
-  let prices (numanal:scarfs-fxdpt 3 ([ ?1 -> mapping ?1 ]) true false)
+  let mppng [[prcs] -> mapping prcs]
+  let prices (numanal:scarfs-fxdpt 3 mppng true false)
   show prices
   let Qd item 0 mapping prices
   let Qs item 1 mapping prices
   show Qs
   show Qd
-  show (map [ [?1 ?2] -> ?1 - ?2 ] Qd Qs)
+  show (map [[s d] -> s - d] Qd Qs)
   let lst numanal:scarfs-fxdpt-info
   show lst
 
@@ -20,9 +18,11 @@ end
 
 to-report mapping [prices]
 
-  let Qs (map [ [?1 ?2] -> ?1 * ?2 ] prices slopes)
-  let rev sum (map [ [?1 ?2] -> ?1 * ?2 ] prices Qs)
-  let Qd (map [ [?1 ?2] -> rev * ?2 / max list ?1 0.0001 ] prices weights)
+  let slopes (list 4 2 7)
+  let shares (list 0.5 0.2 0.3)
+  let Qs (map [[p slp] -> p * slp] prices slopes)
+  let rev sum (map [[p s] -> p * s] prices Qs)
+  let Qd (map [[p shr] -> rev * shr / (max list p 0.0001) ] prices shares)
 
   report list Qd Qs
 

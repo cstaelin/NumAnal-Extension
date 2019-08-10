@@ -147,6 +147,72 @@ end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+to Simplex-MD
+
+  numanal:bounds-clear
+
+  let guess [100 100 100 100 100 100]
+  let fnctn3  [[val] -> function3 val]
+  let fnctn4  [[val] -> function4 val]
+  let xlist numanal:simplex-MD  guess  fnctn3
+  print xlist
+  print function3 xlist
+
+  set xlist numanal:simplex-MD  guess  fnctn4
+  print xlist
+  print function4 xlist
+
+  numanal:bounds-set n-values length guess [0.0] n-values length guess [200.0]
+  set xlist numanal:simplex-MD  guess  fnctn3
+  print xlist
+  print function3 xlist
+
+  set xlist numanal:simplex-MD  guess  fnctn4
+  print xlist
+  print function4 xlist
+
+
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to Simplex-NM
+
+  numanal:bounds-clear
+
+  let guess [100 100 100 100 100 100]
+  let fnctn3  [[val] -> function3 val]
+  let fnctn4  [[val] -> function4 val]
+  let xlist numanal:simplex-NM  guess  fnctn3
+  print xlist
+  print function3 xlist
+
+  set xlist numanal:simplex-NM  guess  fnctn4
+  print xlist
+  print function4 xlist
+
+  numanal:bounds-set n-values length guess [0.0] n-values length guess [200.0]
+  set xlist numanal:simplex-NM guess  fnctn3
+  print xlist
+  print function3 xlist
+
+  set xlist numanal:simplex-NM  guess  fnctn4
+  print xlist
+  print function4 xlist
+
+  numanal:bounds-set [0 1 2 3 4 5] n-values length guess [200.0]
+  set xlist numanal:simplex-NM  guess  fnctn3
+  print xlist
+  print function3 xlist
+
+  set xlist numanal:simplex-NM  guess  fnctn4
+  print xlist
+  print function4 xlist
+
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 to Newton
 
   print " "
@@ -253,15 +319,16 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to Romberg
-
-  let fnctn [[val] -> function8 val]
-  show numanal:romberg-integrate fnctn 0 10
+  print " "
+  print "Integrate between 0 and 10 two functions of x: e^(-3x) and x^2."
+  let fnctn7 [[val] -> function7 val]
+  let fnctn8 [[val] -> function8 val]
+  show numanal:romberg-integrate fnctn7 0 10
+  show numanal:romberg-integrate fnctn8 0 10
 
 end
 
 to-report function7 [ x ]
-  ; report x ^ 2 + x ^ -2
-  ; report x ^ 2 + 1
   report e ^ (-3 * x)
 end
 
@@ -274,25 +341,33 @@ end
 to CMAESMinimize
 
   print " "
+  print "Find the minimum of two multivarible functions, without and then with "
+  print "lower bounds on the solution."
   numanal:bounds-clear
 
-  let guess [100 50 100 100 100 100]
+  let guess [2 2 2 2 2 2 2]
+  ; since the expected solutions are zero and -1, we arbitrarily set siggma to half the guess.
+  let sigma map [[x] -> x / 2] guess
   let fnctn3  [[val] -> function3 val]
   let fnctn4  [[val] -> function4 val]
-  let xlist numanal:CMAES-minimize  guess  fnctn3 (map [[x] -> x / 2] guess)
+  let xlist numanal:CMAES-minimize  guess  fnctn3 sigma
   print xlist
   print function3 xlist
 
-  set xlist numanal:CMAES-minimize  guess  fnctn4 (map [[x] -> x / 2] guess)
+  set xlist numanal:CMAES-minimize  guess  fnctn4 sigma
   print xlist
   print function4 xlist
 
+  ; set the lower bounds to zero and the upper bounds to the upper bound default, which is a very
+  ; large positive number returned by the second item in bounds-get-defaults.
+  ; This has no impact on function3 (except that we get true zeros rather than tiny negatives),
+  ; but it does limit function4 to a non-negative solution.
   numanal:bounds-set n-values length guess [0.0] n-values length guess [item 1 numanal:bounds-get-defaults]
-  set xlist numanal:CMAES-minimize guess fnctn3 (map [[x] -> x / 2] guess)
+  set xlist numanal:CMAES-minimize guess fnctn3 sigma
   print xlist
   print function3 xlist
 
-  set xlist numanal:CMAES-minimize guess fnctn4 (map [[x] -> x / 2] guess)
+  set xlist numanal:CMAES-minimize guess fnctn4 sigma
   print xlist
   print function4 xlist
 
@@ -334,79 +409,12 @@ end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to Simplex-MD
-
-  numanal:bounds-clear
-
-  let guess [100 100 100 100 100 100]
-  let fnctn3  [[val] -> function3 val]
-  let fnctn4  [[val] -> function4 val]
-  let xlist numanal:simplex-MD  guess  fnctn3
-  print xlist
-  print function3 xlist
-
-  set xlist numanal:simplex-MD  guess  fnctn4
-  print xlist
-  print function4 xlist
-
-  ; numanal:bounds-set-nonneg length guess
-  numanal:bounds-set n-values length guess [0.0] n-values length guess [200.0]
-  set xlist numanal:simplex-MD  guess  fnctn3
-  print xlist
-  print function3 xlist
-
-  set xlist numanal:simplex-MD  guess  fnctn4
-  print xlist
-  print function4 xlist
-
-
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-to Simplex-NM
-
-  numanal:bounds-clear
-
-  let guess [100 100 100 100 100 100]
-  let fnctn3  [[val] -> function3 val]
-  let fnctn4  [[val] -> function4 val]
-  let xlist numanal:simplex-NM  guess  fnctn3
-  print xlist
-  print function3 xlist
-
-  set xlist numanal:simplex-NM  guess  fnctn4
-  print xlist
-  print function4 xlist
-
-  numanal:bounds-set n-values length guess [0.0] n-values length guess [200.0]
-  set xlist numanal:simplex-NM guess  fnctn3
-  print xlist
-  print function3 xlist
-
-  set xlist numanal:simplex-NM  guess  fnctn4
-  print xlist
-  print function4 xlist
-
-   numanal:bounds-set [0 1 2 3 4 5] n-values length guess [200.0]
-  set xlist numanal:simplex-NM  guess  fnctn3
-  print xlist
-  print function3 xlist
-
-  set xlist numanal:simplex-NM  guess  fnctn4
-  print xlist
-  print function4 xlist
-
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -763,7 +771,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0-BETA1
+NetLogo 6.1.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

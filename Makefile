@@ -29,17 +29,17 @@ JAVAC := "$(JAVA_HOME)/bin/javac"
 JAVAJAR := "$(JAVA_HOME)/bin/jar"
 SRCS := $(wildcard src/*.java)
 
-NumAnalExtension.zip: numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar commons-math3-3.6.1-javadoc.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.3.0.pdf Examples
+NumAnalExtension.zip: numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.3.0.pdf Examples
 	rm -rf numanal
 	mkdir numanal
-	cp -rp numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar commons-math3-3.6.1-javadoc.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.3.0.pdf Examples numanal
+	cp -rp numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.3.0.pdf Examples numanal
 	zip -rv NumAnalExtension.zip numanal
 	rm -rf numanal
 
-numanal.jar: $(SRCS) Jama-1.0.3.jar commons-math3-3.6.1.jar commons-math3-3.6.1-javadoc.jar PalMathLibrary.jar Makefile manifest.txt
+numanal.jar: $(SRCS) Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar Makefile manifest.txt
 	rm -rf classes
 	mkdir -p classes
-	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.8 -target 1.8 -classpath $(NETLOGO_JAR)$(COLON)Jama-1.0.3.jar$(COLON)commons-math3-3.6.1.jar$(COLON)commons-math3-3.6.1-javadoc.jar$(COLON)PalMathLibrary.jar -d classes $(SRCS)
+	$(JAVAC) -g -deprecation -Xlint:all -Xlint:-serial -Xlint:-path -encoding us-ascii -source 1.8 -target 1.8 -classpath $(NETLOGO_JAR)$(COLON)Jama-1.0.3.jar$(COLON)commons-math3-3.6.1.jar$(COLON)PalMathLibrary.jar -d classes $(SRCS)
 	$(JAVAJAR) cmf manifest.txt numanal.jar -C classes .
 	rm -rf classes
 

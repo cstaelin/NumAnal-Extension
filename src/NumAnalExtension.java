@@ -78,8 +78,8 @@ public class NumAnalExtension extends org.nlogo.api.DefaultClassManager {
             new ScarfsMethod.getEquilibrium());
     primManager.addPrimitive("scarfs-fxdpt-info", 
             new ScarfsMethod.getScarfsFxdptInfo());
-    primManager.addPrimitive("DIRECT-minimize", 
-            new DIRECTMinimize.DIRECTSetup());
+//    primManager.addPrimitive("DIRECT-minimize", 
+//            new DIRECTMinimize.DIRECTSetup());
     primManager.addPrimitive("grid-minimize", 
             new GridMinimize());
   }
