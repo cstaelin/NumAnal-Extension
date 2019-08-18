@@ -2,28 +2,42 @@ extensions [numanal]
 
 to scarf
 
-
+  ; find the fixed point for a simple supply and demand model.
   let mppng [[prcs] -> mapping prcs]
+
   let prices (numanal:scarfs-fxdpt 3 mppng true false)
   show prices
+
+  ; get the quantities demanded and supplied at the equilibrium
+  ; prices
   let Qd item 0 mapping prices
   let Qs item 1 mapping prices
   show Qs
   show Qd
+  ; show the differences between the quantities supplied and demanded.
   show (map [[s d] -> s - d] Qd Qs)
+
+  ; get details on the solution.
   let lst numanal:scarfs-fxdpt-info
   show lst
 
 end
 
 to-report mapping [prices]
-
+  ; this mapping uses prices and linear supply curves to determine
+  ; quantities supplied, uses those quantities and the prices to
+  ; determine total income, and then uses a constant share demand
+  ; model to determine the quantities demanded as a function of
+  ; total income and prices.
   let slopes (list 4 2 7)
   let shares (list 0.5 0.2 0.3)
   let Qs (map [[p slp] -> p * slp] prices slopes)
-  let rev sum (map [[p s] -> p * s] prices Qs)
-  let Qd (map [[p shr] -> rev * shr / (max list p 0.0001) ] prices shares)
+  let income sum (map [[p s] -> p * s] prices Qs)
+  ; note that is dividing by price, we need to account for a possible
+  ; zero price.
+  let Qd (map [[p shr] -> income * shr / (max list p 0.0001) ] prices shares)
 
+  ; report the quantities demanded and supplied in a list of lists.
   report list Qd Qs
 
 end

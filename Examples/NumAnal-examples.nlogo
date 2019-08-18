@@ -409,7 +409,49 @@ end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+to-report function9 [x]
+  let x0 item 0 x - 10
+  let x1 item 1 x
+  let x2 item 2 x
+  let x3 item 3 x
+  let A x0 + 10.0 * x1
+  let B x2 - x3
+  let C x1 - 2.0 * x2
+  let D x0 - x3
 
+  report A ^ 2 + 5.0 * B ^ 2 + C ^ 4 + 10.0 * D ^ 4
+end
+
+to CDSMinimize
+  print " "
+
+  let fnctn9  [[val] -> function9 val]
+  let fnctn4 [[val] -> function4 val]
+  let guess [1 1 1 1]
+  let xlist (numanal:CDS-minimize guess fnctn9 true)
+  print xlist
+  print function9 xlist
+  set xlist (numanal:CDS-minimize guess fnctn4 TRUE 0 0 0 0)
+  print xlist
+  print function4 xlist
+end
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to CGSMinimize
+  print " "
+
+  let fnctn9  [[val] -> function9 val]
+  let fnctn4 [[val] -> function4 val]
+  let guess [1 1 1 1]
+  let xlist (numanal:CGS-minimize guess fnctn9)
+  print xlist
+  print function9 xlist
+  set xlist (numanal:CGS-minimize guess fnctn4 0 0 0 0 2)
+  print xlist
+  print function4 xlist
+end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

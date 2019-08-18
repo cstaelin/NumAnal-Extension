@@ -5,8 +5,8 @@ to-report simplex-nm [ mapping ]
   numanal:bounds-clear
 
   let guess [100 100 100 100 100 100]
-  let fnctn3  [ ?1 -> function3 ?1 ]
-  let fnctn4  [ ?1 -> function4 ?1 ]
+  let fnctn3  [[val] -> function3 val]
+  let fnctn4  [[val] -> function4 val]
   let xlist guess
   let error? false
   carefully  [
@@ -25,19 +25,19 @@ to-report simplex-nm [ mapping ]
 end
 
 to-report function3 [ x ]
-  report sum map [ ?1 -> ?1 ^ 2 ] x
+  report sum map [[z] -> z ^ 2] x
 end
 
 to-report function4 [ x ]
 ;  let y map [round ?] x
   let y x
-  report sum map [ ?1 -> (?1 + 0.5) ^ 2 ] y
+  report sum map [[z] -> (z + 0.5) ^ 2] y
 end
 
 to go
 
-  let method [ ?1 -> simplex-nm ?1 ]
-  let xlist (runresult method ([ ?1 -> function3 ?1 ]))
+  let method [[y] -> simplex-nm y]
+  let xlist (runresult method ([[y] -> function3 y]))
   show xlist
 
 end
@@ -47,8 +47,8 @@ to-report simplex-nm1 [ mapping ]
   numanal:bounds-clear
 
   let guess [100 100 100 100 100 100]
-  let fnctn3  [ ?1 -> function3 ?1 ]
-  let fnctn4  [ ?1 -> function4 ?1 ]
+  let fnctn3  [[val] -> function3 val]
+  let fnctn4  [[val] -> function4 val]
   let xlist guess
 
   set xlist (numanal:simplex-NM  xlist mapping 0 0 0 5)
@@ -62,11 +62,11 @@ end
 
 to go1
 
-  let method [ ?1 -> simplex-nm1 ?1 ]
+  let method [[val] -> simplex-nm1 val]
   let error? false
   let xlist []
   carefully [
-    set xlist (runresult method ([ ?1 -> function3 ?1 ]))
+    set xlist (runresult method ([[y] -> function3 y]))
   ]
   [
     set error? true
@@ -80,14 +80,14 @@ end
 to go2
 
   let method-table table:make
-  table:put method-table "Simplex" [ ?1 -> simplex-nm1 ?1 ]
-  table:put method-table "Simplex-NM" [ ?1 -> simplex-nm1 ?1 ]
-  table:put method-table "Simplex-MD" [ ?1 -> simplex-nm1 ?1 ]
+  table:put method-table "Simplex" [[x] -> simplex-nm1 x]
+  table:put method-table "Simplex-NM" [[x] -> simplex-nm1 x]
+  table:put method-table "Simplex-MD" [[x] -> simplex-nm1 x]
 
   let error? false
   let xlist []
   carefully [
-    set xlist (runresult table:get method-table "Simplex-NM" ([ ?1 -> function3 ?1 ]))
+    set xlist (runresult table:get method-table "Simplex-NM" ([[x] -> function3 x]))
   ]
   [
     set error? true
@@ -97,39 +97,6 @@ to go2
   show xlist
 
 end
-
-
-
-;task [simplex-nm ?1 ?2 ?3 ?4]
-; set frm.profitmax-qlist (runresult table:get gbl.method-table gbl.solution-method frm.profitmax-qlist (task [neg-expected-profits ?]) frm.profitmax-lbounds frm.profitmax-ubounds)
-;
-; to-report simplex-nm [ xvec mapping lbounds ubounds ]
-;  set gbl.return-type "scalar"
-;  let rtol 0.0
-;  ;  let rtol (10 ^ (- gbl.profitmax-precision))
-;  let atol (10 ^ ((- gbl.profitmax-precision) * 2))
-;  let side-length larger-of 1 (0.10 * min xvec)
-;  ; The guess must lie strictly inside the bounds for this method.
-;  let guess set-bounds xvec lbounds ubounds
-;  set gbl.error? false
-;  let yvec []
-;  carefully [
-;    set yvec (numanal:simplex-nm guess mapping side-length rtol atol 0)
-;  ]
-;  [
-;    set gbl.error? true
-;    ifelse member? "Simplex exceeded" error-message [
-;      print-message gbl.cmd error-message
-;      set yvec xvec
-;    ]
-;    [
-;      error error-message
-;    ]
-;  ]
-;
-;  report yvec
-;
-;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
