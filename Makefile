@@ -18,7 +18,7 @@ ifeq ($(origin NETLOGO), undefined)
 endif
 
 # NetLogo.jar files are now modified by the NetLogo version number,
-# e.g., netlogo-6.1.0.jar. Thus we shell to the "find" command which 
+# e.g., netlogo-6.1.1.jar. Thus we shell to the "find" command which 
 # looks in the app folder to get the .jar file name. I tried to 
 # accomplish this with the wildcard function, but it doesn't seem to 
 # handle cases where there are blanks in file/directory names, as is 
@@ -29,10 +29,10 @@ JAVAC := "$(JAVA_HOME)/bin/javac"
 JAVAJAR := "$(JAVA_HOME)/bin/jar"
 SRCS := $(wildcard src/*.java)
 
-NumAnalExtension.zip: numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.3.0.pdf Examples
+NumAnalExtension.zip: numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.4.0.pdf Examples
 	rm -rf numanal
 	mkdir numanal
-	cp -rp numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.3.0.pdf Examples numanal
+	cp -rp numanal.jar Jama-1.0.3.jar commons-math3-3.6.1.jar PalMathLibrary.jar README.md license.md Makefile src manifest.txt NumAnal-v3.4.0.pdf Examples numanal
 	zip -rv NumAnalExtension.zip numanal
 	rm -rf numanal
 

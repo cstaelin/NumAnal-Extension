@@ -217,8 +217,9 @@ public static Matrix getFofX(Matrix X, AnonymousReporter fnctn, Context context)
    return convertSimpleLogoListToArray(rslts);
    }
    */
+
   public static void writeToNetLogo(String mssg, Boolean toOutputArea, 
-          Context context) throws ExtensionException, LogoException {
+          Context context) throws ExtensionException {
     try {
       context.workspace().outputObject(mssg, null, true, true, 
               (toOutputArea) ? 
@@ -328,6 +329,15 @@ public static int[] convertSimpleLogoListToIntArray(LogoList xlist) {
     return x;
   }
 
+public static boolean[] convertSimpleLogoListToBooleanArray(LogoList xlist) {
+    int n = xlist.size();
+    boolean[] x = new boolean[n];
+    for (int j = 0; j < n; j++) {
+      x[j] = (Boolean) xlist.get(j);
+    }
+    return x;
+  }
+
   public static LogoList convertArrayToSimpleLogoList(double[] x) {
     LogoListBuilder xlist = new LogoListBuilder();
     for (double elem : x) {
@@ -351,9 +361,21 @@ public static int[] convertSimpleLogoListToIntArray(LogoList xlist) {
     NumAnalUtils.writeToNetLogo(lbl + " " + val, false, context);
   }
   
-  public static void printString(String strng, Context context) 
+    public static void printString(String strng, Context context) {
+        try {
+            NumAnalUtils.writeToNetLogo(strng, false, context);
+        } catch (ExtensionException e) {}
+    }
+  
+  public static void printArray(String lbl, double[] vec, Context context)
           throws ExtensionException, LogoException {
-    NumAnalUtils.writeToNetLogo(strng, false, context);
+      int n = vec.length;
+      StringBuilder buf = new StringBuilder();
+      for (int j = 0; j < n; j++) {
+          buf.append(vec[j]);
+          buf.append(" ");
+      }
+      NumAnalUtils.writeToNetLogo(lbl + " " + buf.toString(), false, context);
   }
 
   public static int findPattern(ArrayList<double[]> history, Context context) 

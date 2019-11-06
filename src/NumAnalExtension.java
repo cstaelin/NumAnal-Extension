@@ -1,6 +1,6 @@
 package org.nlogo.extensions.numanal;
 /*
-              VERSION 3.3.0 - TO BE USED WITH NETLOGO v6.1
+              VERSION 3.4.0 - TO BE USED WITH NETLOGO v6.1
 */ 
 
 /*
@@ -26,7 +26,7 @@ public class NumAnalExtension extends org.nlogo.api.DefaultClassManager {
   public java.util.List<String> additionalJars() {
     java.util.List<String> list = new java.util.ArrayList<>();
     list.add("Jama-1.0.3.jar");
-    list.add("commons-math3-3.2.jar");
+    list.add("commons-math3-3.6.1.jar");
     list.add("PalMathLibrary.jar");
     return list;
   }
@@ -36,6 +36,10 @@ public class NumAnalExtension extends org.nlogo.api.DefaultClassManager {
   public void load(org.nlogo.api.PrimitiveManager primManager) {
     primManager.addPrimitive("simplex",
             new Simplex.SimplexSolve());
+    primManager.addPrimitive("LPsimplex",
+            new ApacheLPSolve.LPSimplexSolve(ApacheLPSolve.SOLVE_PRIMAL));
+    primManager.addPrimitive("LPdualsimplex",
+            new ApacheLPSolve.LPSimplexSolve(ApacheLPSolve.SOLVE_DUAL));
     primManager.addPrimitive("Brent-minimize",
             new BrentMinimize());
     primManager.addPrimitive("BrentA-minimize",

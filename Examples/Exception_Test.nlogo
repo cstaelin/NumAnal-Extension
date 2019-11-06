@@ -1,7 +1,10 @@
+; test exception handling (in this case too many iterations) and catching
+; exceptions or not with "carefully".
+
 extensions [numanal table]
 
 to-report simplex-nm [ mapping ]
-
+  ; catches the exception.
   numanal:bounds-clear
 
   let guess [100 100 100 100 100 100]
@@ -24,26 +27,8 @@ to-report simplex-nm [ mapping ]
 
 end
 
-to-report function3 [ x ]
-  report sum map [[z] -> z ^ 2] x
-end
-
-to-report function4 [ x ]
-;  let y map [round ?] x
-  let y x
-  report sum map [[z] -> (z + 0.5) ^ 2] y
-end
-
-to go
-
-  let method [[y] -> simplex-nm y]
-  let xlist (runresult method ([[y] -> function3 y]))
-  show xlist
-
-end
-
 to-report simplex-nm1 [ mapping ]
-
+  ; does not catch the exception.
   numanal:bounds-clear
 
   let guess [100 100 100 100 100 100]
@@ -60,8 +45,30 @@ to-report simplex-nm1 [ mapping ]
 
 end
 
-to go1
 
+to-report function3 [ x ]
+  report sum map [[z] -> z ^ 2] x
+end
+
+to-report function4 [ x ]
+;  let y map [round ?] x
+  let y x
+  report sum map [[z] -> (z + 0.5) ^ 2] y
+end
+
+to go
+  ; extension caught in nm, but not in nm1.
+  let method [[y] -> simplex-nm y]
+  let method1 [[y] -> simplex-nm1 y]
+  let xlist (runresult method ([[y] -> function3 y]))
+  show xlist
+  set xlist (runresult method1 ([[y] -> function3 y]))
+  show xlist
+
+end
+
+to go1
+  ; catch the exception here.
   let method [[val] -> simplex-nm1 val]
   let error? false
   let xlist []
@@ -78,16 +85,17 @@ to go1
 end
 
 to go2
-
+  ; play around with tables and where the exception is caught.
   let method-table table:make
-  table:put method-table "Simplex" [[x] -> simplex-nm1 x]
-  table:put method-table "Simplex-NM" [[x] -> simplex-nm1 x]
-  table:put method-table "Simplex-MD" [[x] -> simplex-nm1 x]
+  table:put method-table "test1" [[x] -> simplex-nm1 x]
+  table:put method-table "test2" [[x] -> simplex-nm x]
+  let methods table:keys method-table
 
+  foreach methods [method ->
   let error? false
   let xlist []
   carefully [
-    set xlist (runresult table:get method-table "Simplex-NM" ([[x] -> function3 x]))
+    set xlist (runresult table:get method-table method ([[x] -> function3 x]))
   ]
   [
     set error? true
@@ -95,6 +103,7 @@ to go2
   ]
   show error?
   show xlist
+  ]
 
 end
 @#$#@#$#@
@@ -467,7 +476,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

@@ -242,9 +242,9 @@ public class Simplex {
     // We have taken out the random element.
     int nvert = nvar + 1;
     double[][] s = new double[nvert][nvar];
-    s[0] = (double[]) x.clone();
+    s[0] = x.clone();
     for (int i = 1; i < nvert; i++) {
-      s[i] = (double[]) x.clone();
+      s[i] = x.clone();
 //    s[i][i - 1] += ((1.0 - PRANGE_DEFAULT/2.0) + 
 //            randgen.nextDouble()*PRANGE_DEFAULT) * sideLength;
       s[i][i - 1] += sideLength;

@@ -1,10 +1,17 @@
 # NetLogo NumAnal extension
 
-The NumAnal extension contains methods for finding the roots of single equations (Brent) and multivariable systems of equations (Newton and Broyden), for finding the minima of single equations (Brent) and multivariable functions (BOBYQA, CDS, CGS, CMAES, DES and Simplex), for finding fixed points (Scarf), and for evaluating definite integrals (Romberg).  
+The NumAnal extension contains methods for finding the roots of single equations (Brent) and multivariable systems of equations (Newton and Broyden), for finding the minima of single equations (Brent) and multivariable functions (BOBYQA, CDS, CGS, CMAES, DES and Simplex), for solving linear programming problems, for finding fixed points (Scarf), and for evaluating definite integrals (Romberg).  
 
 To install this extension, simply put `extensions [ numanal ]` as the first line of your model code (or add `numanal` to the current extensions line) and the Extension Manager of NetLogo 6.1 should install it.  
 
-The documentation for the numanal extension is contained in the PDF file *NumAnal-3.3.0.pdf* and examples of its use are in the `Examples` directory.  Java source files, a manifest and makefile for those who want examine the code or modify the extension for their own purposes are available at https://github.com/cstaelin/NumAnal-Extension/releases.
+The documentation for the numanal extension is contained in the PDF file *NumAnal-3.4.0.pdf* and examples of its use are in the `Examples` directory. Both of these are in the numanal installation folder, which can generally be found in this subfolder relative to your home (user) directory:  
+	On Mac OS X: `Library/Application Support/NetLogo`  
+	On Windows: `AppData\Roaming\NetLogo\6.1\extensions`  
+	On Linux: `.netlogo`
+
+For more information, see https://ccl.northwestern.edu/netlogo/docs/extensions.html#where-extensions-are-located.
+
+Java source files, a manifest and a makefile for those who want examine the code or modify the extension for their own purposes are available at https://github.com/cstaelin/NumAnal-Extension/releases.
 
 ## Feedback? Bugs? Feature Requests?
 
