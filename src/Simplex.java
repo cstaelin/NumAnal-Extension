@@ -95,7 +95,7 @@ public class Simplex {
 
   /*
    * We took out the random element in creating the initial simplex as
-   * with it in, NetLogo will not give reproducable results when the 
+   * with it in, NetLogo will not give reproducible results when the 
    * NetLogo random-seed is set. It appears that this is so even when 
    * the Java Random class is constructed with a fixed seed.
    */

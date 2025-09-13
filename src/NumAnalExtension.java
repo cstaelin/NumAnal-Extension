@@ -1,9 +1,9 @@
 package org.nlogo.extensions.numanal;
 /*
-              VERSION 3.4.0 - TO BE USED WITH NETLOGO v6.1
+              VERSION 4.0.0 - TO BE USED WITH NETLOGO v7.0
 */ 
 
-/*
+ /*
   * This extension provides a number of primitives for finding the roots of 
   * both single variable equations and systems of n equations in n variables; 
   * for optimizing (finding the minima) of both univariate and multivariate 
@@ -14,32 +14,31 @@ package org.nlogo.extensions.numanal;
   * This extension assumes that functions can be passed to it in the form 
   * of NetLogo anonymous reporters and therefore works only with NetLogo 
   * versions 6.0 and above.  
+  *
   * The JAMA Matrix class of java methods is used internally to the extension 
-  * for performing linear algebra .  Jama-1.0.3.jar, commons-math3.3.6.1.jar 
+  * for performing linear algebra. Jama-1.0.3.jar, commons-math3.3.6.1.jar 
   * and PalMathLibrary.jar, all distributed with this package, must be placed 
-  * in the same directory as the numanal.jar file.  
-  */
+  * in the same directory as the numanal.jar file. The licenses for the use
+  * of these three packages are contained the the license.md file distributed
+  * with this extension.
+  *
+  * In addition, netlogo-7.x.x.jar (where the x's are the subversion 
+  * numbers of the current NetLogo extension) and scala-library-2.13.16.jar are
+  * also required. These jar files are found in the /app subdirectory of the 
+  * NetLogo installation.
+ */
 
 public class NumAnalExtension extends org.nlogo.api.DefaultClassManager {
-
-  @Override
-  public java.util.List<String> additionalJars() {
-    java.util.List<String> list = new java.util.ArrayList<>();
-    list.add("Jama-1.0.3.jar");
-    list.add("commons-math3-3.6.1.jar");
-    list.add("PalMathLibrary.jar");
-    return list;
-  }
 
   // Define the primitives.
   @Override
   public void load(org.nlogo.api.PrimitiveManager primManager) {
     primManager.addPrimitive("simplex",
             new Simplex.SimplexSolve());
-    primManager.addPrimitive("LPsimplex",
-            new ApacheLPSolve.LPSimplexSolve(ApacheLPSolve.SOLVE_PRIMAL));
-    primManager.addPrimitive("LPdualsimplex",
-            new ApacheLPSolve.LPSimplexSolve(ApacheLPSolve.SOLVE_DUAL));
+    primManager.addPrimitive("simplex-MD",
+            new ApacheSimplex.SimplexSolve(ApacheSimplex.MULTI_DIRECTIONAL_SIMPLEX));
+    primManager.addPrimitive("simplex-NM",
+            new ApacheSimplex.SimplexSolve(ApacheSimplex.NELDER_MEAD_SIMPLEX));
     primManager.addPrimitive("Brent-minimize",
             new BrentMinimize());
     primManager.addPrimitive("BrentA-minimize",
@@ -64,10 +63,6 @@ public class NumAnalExtension extends org.nlogo.api.DefaultClassManager {
             new CSMinimize.CDSSolve());
     primManager.addPrimitive("BOBYQA-minimize",
             new BOBYQAMinimize.BOBYQASolve());
-    primManager.addPrimitive("simplex-MD",
-            new ApacheSimplex.SimplexSolve(ApacheSimplex.MULTI_DIRECTIONAL_SIMPLEX));
-    primManager.addPrimitive("simplex-NM",
-            new ApacheSimplex.SimplexSolve(ApacheSimplex.NELDER_MEAD_SIMPLEX));
     primManager.addPrimitive("DES-minimize",
             new DESMinimize.DESSolve());
     primManager.addPrimitive("bounds-set",

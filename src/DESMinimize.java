@@ -141,8 +141,8 @@ public class DESMinimize
                 } else {
                     // The bound dimentions do not match the problem.
                     throw new ExtensionException(
-                            "The dimension of the problem " + nvar
-                            + " does not match the dimension of the bounds "
+                            "The dimension of the problem, " + nvar
+                            + ", does not match the dimension of the bounds, "
                             + Bounds.lowerBounds.length + ".");
                 }
             }
